@@ -8,7 +8,8 @@ def bp(msg):
     x = input()
 
 #endpoint = '71.205.239.223:5000'
-endpoint = 'localhost:5000'
+endpoint = '10.0.0.163:5000'
+#endpoint = 'localhost:5000'
 test_url = 'http://' + endpoint + '/api/test'
 
 # prepare headers for http request
@@ -23,9 +24,13 @@ _, img_encoded = cv2.imencode('.jpg', img)
 
 # send http request with image and receive response
 print("Sending Image... ")
-response = requests.post(test_url, data=img_encoded.tobytes(), headers=headers)
-# decode response
-print(json.loads(response.text))
+try:
+    response = requests.post(test_url, data=img_encoded.tobytes(), headers=headers)
+
+    # decode response
+    print(json.loads(response.text))
+    bp("press ENTER to close...")
+except:
+    bp("Unexpected server error...")
 
 # expected output: {u'message': u'image received. size=132x136'}
-bp("press ENTER to close...")
