@@ -8,8 +8,8 @@ def bp(msg):
     x = input()
 
 #endpoint = '71.205.239.223:5000'
-endpoint = '10.0.0.163:5000'
-#endpoint = 'localhost:5000'
+#endpoint = '10.0.0.163:5000'
+endpoint = 'localhost:5000'
 test_url = 'http://' + endpoint + '/api/test'
 
 # prepare headers for http request
@@ -17,10 +17,13 @@ content_type = 'image/jpg'
 headers = {'content-type': content_type}
 
 print("Loading Image... ")
-img = cv2.imread("testImage.png")
+img = cv2.imread("hoe.png")
 
 # encode image as jpeg
-_, img_encoded = cv2.imencode('.jpg', img)
+try:
+    _, img_encoded = cv2.imencode('.jpg', img)
+except:
+    bp("error encoding image")
 
 # send http request with image and receive response
 print("Sending Image... ")
