@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 import requests
 import json
+import numpy as np
 import cv2
 
 # Server Info
@@ -40,9 +41,22 @@ def handle_takeWebcamPhoto(event):
     imgLabel.image = img2
     
 
+def handle_serverResponse(response):
+    #print(json.loads(response.text))
+
+    # convert string of image data to uint8
+    nparr = np.frombuffer(response.data, np.uint8)
+    # decode image
+    responseImg = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    cv2.imwrite("responseImg.png", responseImg)
+    print("image recieved")
+
 
 def handle_sendPhotoToServer(event):
-    print("Sending image...")
+    if(ipEntry.get() == ""):
+        print("No IP entered")
+        return
+
     # prepare headers for http request
     endpoint_url = 'http://' + ipEntry.get() + '/api/test'
     content_type = 'image/png'
@@ -50,20 +64,22 @@ def handle_sendPhotoToServer(event):
 
     img = cv2.imread("snapshot.png")
 
-    # encode image as jpeg
+    # encode image as png
     try:
-        _, img_encoded = cv2.imencode('.png', img)
+        good, img_encoded = cv2.imencode('.png', img)
+        if good != True:
+            print("Image could not be encoded")
     except:
         print("Error encoding image")
 
     # send http request with image and receive response
     try:
+        print("Send image...")
         response = requests.post(endpoint_url, data=img_encoded.tobytes(), headers=headers)
-        print(json.loads(response.text))
+        handle_serverResponse(response)
+        #print(json.loads(response.text))
     except:
         print("Unexpected server error...")
-
-    # expected output: {u'message': u'image received. size=132x136'}
 
 
 # ^^^ Functions
@@ -80,7 +96,7 @@ imgLabel = tk.Label(window, image = img)
 imgLabel.pack()
 
 # IP adress input
-ipLabel = tk.Label(text="Server IP (try 71.205.239.223:5000)")
+ipLabel = tk.Label(text="Server IP (try 71.205.239.223:5000) >localhost:5000<")
 ipLabel.pack()
 ipEntry = tk.Entry()
 ipEntry.pack()
