@@ -101,6 +101,7 @@ imgLabel.pack()
 ipLabel = tk.Label(text="Server IP (try 71.205.239.223:5000) >localhost:5000<")
 ipLabel.pack()
 ipEntry = tk.Entry()
+ipEntry.insert(END, endpoint)
 ipEntry.pack()
 
 # Button to take a webcam photo
