@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 import requests
 import json
+import jsonpickle
 import numpy as np
 import cv2
 
@@ -13,7 +14,7 @@ endpoint = 'localhost:5000'
 # Connect to webcam
 print("Connecting to webcam...")
 cam_port = 0
-cam = cv2.VideoCapture(cam_port)
+###### cam = cv2.VideoCapture(cam_port)
 print("...webcam connected")
 
 
@@ -42,10 +43,14 @@ def handle_takeWebcamPhoto(event):
     
 
 def handle_serverResponse(response):
-    #print(json.loads(response.text))
+    print("handle server response...")
+    responseJson = json.loads(response.text)
 
     # convert string of image data to uint8
-    nparr = np.frombuffer(response.data, np.uint8)
+    nparr = np.frombuffer(responseJson['py/b64'], np.uint8)
+    print("string converted to uint8")
+    print(nparr)
+    
     # decode image
     responseImg = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     cv2.imwrite("responseImg.png", responseImg)
@@ -75,11 +80,16 @@ def handle_sendPhotoToServer(event):
     # send http request with image and receive response
     try:
         print("Send image...")
+        #print(img_encoded.tobytes())
         response = requests.post(endpoint_url, data=img_encoded.tobytes(), headers=headers)
-        handle_serverResponse(response)
+        
+        #handle_serverResponse(response)
         #print(json.loads(response.text))
     except:
         print("Unexpected server error...")
+        return
+    #print(json.loads(response.text))
+    handle_serverResponse(response)
 
 
 # ^^^ Functions
