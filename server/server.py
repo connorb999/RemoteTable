@@ -11,11 +11,8 @@ app = Flask(__name__)
 def test():
     print("incoming request...")
     r = request
-    #print(r.data)
-    # convert string of image data to uint8
-    #print(r.data)
     nparr = np.frombuffer(r.data, np.uint8)
-    #print(nparr)
+
     # decode image
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
@@ -30,20 +27,13 @@ def test():
         good, img_encoded = cv2.imencode('.png', mergeImg)
         if good != True:
             print("Image could not be encoded")
-        #print(img_encoded.tobytes())
     except:
         print("Error encoding image")
 
-    # build a response dict to send back to client
-    #response = {'message': 'image received. size={}x{}'.format(img_encoded.shape[1], img_encoded.shape[0]) }
-    response = img_encoded.tobytes()
-
     # encode response using jsonpickle
-    response_pickled = jsonpickle.encode(response)
+    response_pickled = jsonpickle.encode(img_encoded)
 
-    print(img_encoded)
-
-    print("...Success")
+    print("...Sending Response")
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
 # start flask app
