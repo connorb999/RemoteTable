@@ -90,6 +90,7 @@ def handle_sendPhotoToServer(event):
 
 
 window = tk.Tk()
+window.attributes('-fullscreen',True)
 window.title('Remote Table Control Panel')
 
 # Image Preview
@@ -103,6 +104,11 @@ ipLabel.pack()
 ipEntry = tk.Entry()
 ipEntry.insert(END, endpoint)
 ipEntry.pack()
+
+nameLabel = tk.Label(text="Name:")
+nameLabel.pack()
+nameEntry = tk.Entry()
+nameEntry.pack()
 
 # Button to take a webcam photo
 takePhotoButton = tk.Button(
