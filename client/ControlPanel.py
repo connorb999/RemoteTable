@@ -9,7 +9,7 @@ import cv2
 # Server Info
 #endpoint = '71.205.239.223:5000'
 #endpoint = '10.0.0.163:5000'
-endpoint = 'localhost:5000'
+endpoint = 'localhost:25565'
 
 # Connect to webcam
 print("Connecting to webcam...")
@@ -99,7 +99,7 @@ imgLabel = tk.Label(window, image = img)
 imgLabel.pack()
 
 # IP adress input
-ipLabel = tk.Label(text="Server IP (try 71.205.239.223:5000) >localhost:5000<")
+ipLabel = tk.Label(text="Server IP (try 71.205.239.223:25565)")
 ipLabel.pack()
 ipEntry = tk.Entry()
 ipEntry.insert(END, endpoint)
