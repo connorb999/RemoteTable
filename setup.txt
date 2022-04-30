@@ -1,0 +1,15 @@
+from __future__ import print_function
+//import requests
+import json
+//import cv2
+
+from flask import Flask, request, Response
+//import jsonpickle
+//import numpy as np
+//import cv2
+
+=========================================================
+//needed for client
+pip install opencv-python
+pip install requests
+pip install jsonpickle

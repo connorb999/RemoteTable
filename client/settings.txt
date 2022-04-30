@@ -1,0 +1,7 @@
+ip;localhost:25565
+crop_top;16
+crop_bottom;40
+crop_left;26
+crop_right;36
+board_width;24
+board_height;18

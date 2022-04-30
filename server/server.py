@@ -20,11 +20,11 @@ def test():
     cv2.imwrite("test/test.png", img)
 
     flipImg = cv2.flip(img, 1)
-    mergeImg = cv2.addWeighted(img, 0.5, flipImg, 0.5, 0)
+    #mergeImg = cv2.addWeighted(img, 0.5, flipImg, 0.5, 0)
 
     # encode image as png
     try:
-        good, img_encoded = cv2.imencode('.png', mergeImg)
+        good, img_encoded = cv2.imencode('.png', flipImg)
         if good != True:
             print("Image could not be encoded")
     except:
